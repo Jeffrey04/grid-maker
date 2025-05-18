@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <title>Grid Maker</title>
+  </head>
+  <body>
+    <h1>Grid Maker</h1>
+    <div>
+      <p>Dimension: 300 * 300; 8 * 8 blocks</p>
+      <div id="ex1" />
+    </div>
+
+    <div>
+      <p>
+        Dimension: (CONTAINER_WIDTH) * (WINDOW_HEIGHT - 300); 8 * 8 blocks
+        (Dynamic resize-able)
+      </p>
+      <div id="ex2" />
+    </div>
+    <!--
+    <script src="https://code.jquery.com/jquery-2.1.4.js" type="text/javascript"></script>
+    <script src="http://underscorejs.org/underscore.js" type="text/javascript"></script>
+    <script src="./grid2.js" type="module"></script>
+    -->
+    <script type="module">
+      import grid_maker from "./grid2.js";
+
+      window.addEventListener("load", function () {
+        grid_maker("#ex1", {
+          width: function () {
+            return 300;
+          },
+          height: function () {
+            return 300;
+          },
+          row: 8,
+          column: 8,
+        });
+
+        grid_maker("#ex2", {
+          width: function () {
+            return this.getBoundingClientRect().width;
+          },
+          height: function () {
+            return window.innerHeight - 300;
+          },
+          row: 8,
+          column: 8,
+        });
+      });
+    </script>
+  </body>
+</html>
