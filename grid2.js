@@ -230,23 +230,28 @@ export default function grid_maker(selectors, user_options) {
 		border_px: 1,
 		border_color: "#CCC",
 		classes: { row: "", block: "" },
-		...user_options,
+		...(user_options || {}),
 	};
-	const elem = document.querySelector(selectors);
+	const elements = document.querySelectorAll(selectors);
 
-	elem.addEventListener("board:init", board_init);
-	elem.addEventListener("board:resize", board_resize);
-	elem.addEventListener("board:block:get", board_get_block);
-	elem.addEventListener("board:block:list", board_list_block);
+	// biome-ignore lint/complexity/noForEach: <explanation>
+	elements.forEach((elem) => {
+		elem.addEventListener("board:init", board_init);
+		elem.addEventListener("board:resize", board_resize);
+		elem.addEventListener("board:block:get", board_get_block);
+		elem.addEventListener("board:block:list", board_list_block);
 
-	elem.dispatchEvent(new CustomEvent("board:init", { detail: { options } }));
+		elem.dispatchEvent(new CustomEvent("board:init", { detail: { options } }));
 
-	window.addEventListener(
-		"resize",
-		debounce((event) =>
-			elem.dispatchEvent(
-				new CustomEvent("board:resize", { detail: { options } }),
+		window.addEventListener(
+			"resize",
+			debounce((event) =>
+				elem.dispatchEvent(
+					new CustomEvent("board:resize", { detail: { options } }),
+				),
 			),
-		),
-	);
+		);
+	});
+
+	return elements;
 }
